@@ -7,6 +7,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.kafka.core.KafkaTemplate;
 
+import java.nio.charset.StandardCharsets;
+
 @SpringBootApplication
 public class Application {
 
@@ -22,19 +24,12 @@ public class Application {
     }
 
     @Bean
-    public ApplicationRunner sendAsyncRunner(ClipProducer clipProducer) {
+    public ApplicationRunner producerRunner(ClipProducer clipProducer) {
         return args -> {
             clipProducer.sendAsync("03-producer", "Hello, Clip3-async");
-            Thread.sleep(1000L);
-        };
-    }
-
-
-    @Bean
-    public ApplicationRunner sendSyncRunner(ClipProducer clipProducer) {
-        return args -> {
             clipProducer.sendSync("03-producer", "Hello, Clip3-sync");
-            Thread.sleep(1000L);
+            clipProducer.sendRouting("03-producer", "Hello, Clip3-routing");
+            clipProducer.sendRouting("03-producer-bytes", "Hello, Clip3-bytes".getBytes(StandardCharsets.UTF_8));
         };
     }
 }

@@ -3,6 +3,7 @@ package com.fastcampus.springkafka.producer;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.kafka.core.RoutingKafkaTemplate;
 import org.springframework.kafka.support.SendResult;
 import org.springframework.stereotype.Service;
 import org.springframework.util.concurrent.ListenableFuture;
@@ -14,6 +15,7 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public class ClipProducer {
     private final KafkaTemplate<String, String> kafkaTemplate;
+    private final RoutingKafkaTemplate routingKafkaTemplate;
 
     public void sendAsync(String topic, String message) {
         ListenableFuture<SendResult<String, String>> future = kafkaTemplate.send(topic, message);
@@ -30,4 +32,11 @@ public class ClipProducer {
         }
     }
 
+    public void sendRouting(String topic, String message) {
+        routingKafkaTemplate.send(topic, message);
+    }
+
+    public void sendRouting(String topic, byte[] message) {
+        routingKafkaTemplate.send(topic, message);
+    }
 }
