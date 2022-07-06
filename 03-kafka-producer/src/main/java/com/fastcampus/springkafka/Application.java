@@ -30,6 +30,7 @@ public class Application {
             clipProducer.sendSync("03-producer", "Hello, Clip3-sync");
             clipProducer.sendRouting("03-producer", "Hello, Clip3-routing");
             clipProducer.sendRouting("03-producer-bytes", "Hello, Clip3-bytes".getBytes(StandardCharsets.UTF_8));
+            clipProducer.replyingSend("03-producer-request", "Ping Clip3");
         };
     }
 }

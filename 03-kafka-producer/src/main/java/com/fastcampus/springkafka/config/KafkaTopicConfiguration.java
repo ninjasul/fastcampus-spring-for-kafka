@@ -11,7 +11,9 @@ public class KafkaTopicConfiguration {
     public KafkaAdmin.NewTopics clip3Topic() {
         return new KafkaAdmin.NewTopics(
                 TopicBuilder.name("03-producer").build(),
-                TopicBuilder.name("03-produce-bytes").build()
+                TopicBuilder.name("03-producer-bytes").build(),
+                TopicBuilder.name("03-producer-request").build(),
+                TopicBuilder.name("03-producer-replies").build()
         );
     }
 }
