@@ -1,8 +1,6 @@
 package com.fastcampus.springkafka.producer;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.kafka.core.KafkaProducerException;
-import org.springframework.kafka.core.KafkaSendCallback;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;
 import org.springframework.stereotype.Service;
