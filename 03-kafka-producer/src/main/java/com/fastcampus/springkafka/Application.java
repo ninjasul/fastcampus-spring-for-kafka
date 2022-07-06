@@ -22,9 +22,18 @@ public class Application {
     }
 
     @Bean
-    public ApplicationRunner producerRunner(ClipProducer clipProducer) {
+    public ApplicationRunner sendAsyncRunner(ClipProducer clipProducer) {
         return args -> {
             clipProducer.sendAsync("03-producer", "Hello, Clip3-async");
+            Thread.sleep(1000L);
+        };
+    }
+
+
+    @Bean
+    public ApplicationRunner sendSyncRunner(ClipProducer clipProducer) {
+        return args -> {
+            clipProducer.sendSync("03-producer", "Hello, Clip3-sync");
             Thread.sleep(1000L);
         };
     }

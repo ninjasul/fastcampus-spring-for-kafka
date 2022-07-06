@@ -10,11 +10,11 @@ public class KafkaTemplateSendAsyncCallback implements KafkaSendCallback {
     @Override
     public void onFailure(KafkaProducerException ex) {
         ProducerRecord<Object, Object> failedRecord = ex.getFailedProducerRecord();
-        log.error("Failed to send message. record: {}", failedRecord);
+        log.error("Failed to send a message. record: {}", failedRecord);
     }
 
     @Override
     public void onSuccess(Object result) {
-        log.info("Succeeded to send message.");
+        log.info("Succeeded to send a message asynchronously.");
     }
 }
