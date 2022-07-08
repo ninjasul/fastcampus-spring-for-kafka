@@ -16,9 +16,7 @@ public class ConsumerApplication {
         SpringApplication.run(ConsumerApplication.class, args);
     }
 
-
-    @Bean
-    public ApplicationRunner runner(ClipProducer clipProducer,
+    public ApplicationRunner listenerContainerRunner(ClipProducer clipProducer,
                                     KafkaMessageListenerContainer<String, String> kafkaMessageListenerContainer) {
         return args -> {
             clipProducer.sendAsync("clip4", "Hello, Clip4 Container.");
@@ -39,6 +37,13 @@ public class ConsumerApplication {
 
             kafkaMessageListenerContainer.stop();
             log.info("---- stopped ----");
+        };
+    }
+
+    @Bean
+    public ApplicationRunner runner(ClipProducer clipProducer) {
+        return args -> {
+            clipProducer.sendAsync("clip4-listener", "Hello, Clip4 Listener.");
         };
     }
 }
