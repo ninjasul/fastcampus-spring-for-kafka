@@ -50,7 +50,7 @@ public class ConsumerApplication {
     @Bean
     public ApplicationRunner animalSendAsyncRunner(ClipProducer clipProducer) {
         return args -> {
-            clipProducer.sendAsync("clip4-animal", new Animal("puppy", 15));
+            clipProducer.sendAsync("clip4-animal", new Animal("puppy", 9));
         };
     }
 }
