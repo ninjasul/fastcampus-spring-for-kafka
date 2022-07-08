@@ -1,12 +1,13 @@
 package com.fastcampus.springkafka.consumer;
 
+import com.fastcampus.springkafka.model.Animal;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
-import org.springframework.kafka.listener.adapter.ConsumerRecordMetadata;
 import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.stereotype.Service;
 
+import javax.validation.Valid;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.TimeZone;
@@ -16,7 +17,6 @@ import java.util.TimeZone;
 public class ClipConsumer {
     /**
      * concurrency: 생성할 Thread의 개수
-     * @param message
      */
     @KafkaListener(
         id = "clip4-listener-id",
@@ -35,5 +35,14 @@ public class ClipConsumer {
                 TimeZone.getDefault().toZoneId()),
                 message
         );
+    }
+
+    @KafkaListener(
+        id = "clip4-animal-listener",
+        topics = "clip4-animal",
+        containerFactory = "kafkaJsonContainerFactory"
+    )
+    public void listenAnimal(@Valid Animal animal) {
+        log.info("Animal. animal: {}", animal);
     }
 }

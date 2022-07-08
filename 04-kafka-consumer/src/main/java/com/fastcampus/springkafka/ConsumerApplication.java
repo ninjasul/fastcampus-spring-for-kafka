@@ -1,5 +1,6 @@
 package com.fastcampus.springkafka;
 
+import com.fastcampus.springkafka.model.Animal;
 import com.fastcampus.springkafka.producer.ClipProducer;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationRunner;
@@ -40,10 +41,16 @@ public class ConsumerApplication {
         };
     }
 
-    @Bean
-    public ApplicationRunner runner(ClipProducer clipProducer) {
+    public ApplicationRunner stringSendAsyncRunner(ClipProducer clipProducer) {
         return args -> {
             clipProducer.sendAsync("clip4-listener", "Hello, Clip4 Listener.");
+        };
+    }
+
+    @Bean
+    public ApplicationRunner animalSendAsyncRunner(ClipProducer clipProducer) {
+        return args -> {
+            clipProducer.sendAsync("clip4-animal", new Animal("puppy", 15));
         };
     }
 }
