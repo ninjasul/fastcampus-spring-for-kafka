@@ -22,7 +22,6 @@ public class TopicManagementApplication {
             kafkaManager.deleteConfig();
             kafkaManager.describeTopicConfigs();
             kafkaManager.deleteRecords();
-            kafkaManager.describeTopicConfigs();
         };
     }
 }

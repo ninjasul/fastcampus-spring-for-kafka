@@ -64,7 +64,7 @@ public class KafkaManager {
 
         result.entrySet().forEach(entry -> {
             try {
-                log.info("entry - topic: {}, partition: {}, value: {}", entry.getKey().topic(), entry.getKey().partition(), entry.getValue().get().lowWatermark());
+                log.info("entry - topic: {}, partition: {}, lowWatermark: {}", entry.getKey().topic(), entry.getKey().partition(), entry.getValue().get().lowWatermark());
             } catch (Exception e) {
                 log.error("", e);
             }
