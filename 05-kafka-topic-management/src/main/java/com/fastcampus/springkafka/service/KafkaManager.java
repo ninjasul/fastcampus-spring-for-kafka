@@ -83,4 +83,21 @@ public class KafkaManager {
     public void deleteConsumerGroup() throws ExecutionException, InterruptedException {
         adminClient.deleteConsumerGroups(List.of("clip4-animal-listener")).all().get();
     }
+
+    public void findAllOffsets() {
+        Map<TopicPartition, OffsetSpec> target = new HashMap<>();
+        target.put(new TopicPartition("clip4-listener-id", 0), OffsetSpec.latest());
+
+        ListOffsetsResult result = adminClient.listOffsets(target);
+
+        target.keySet().forEach(tp -> {
+            try {
+                log.info("topic: {}, partition: {}, offsets: {}", tp.topic(), tp.partition(), result.partitionResult(tp).get());
+            } catch (Exception e) {
+                log.error("", e);
+            }
+        });
+    }
 }
+
+

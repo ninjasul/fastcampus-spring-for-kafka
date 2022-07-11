@@ -24,9 +24,11 @@ public class TopicManagementApplication {
             kafkaManager.describeTopicConfigs();
             kafkaManager.deleteRecords();
 */
+
             kafkaManager.findAllConsumerGroup();
-            kafkaManager.deleteConsumerGroup();
-            kafkaManager.findAllConsumerGroup();
+            //kafkaManager.deleteConsumerGroup();
+            //kafkaManager.findAllConsumerGroup();
+            kafkaManager.findAllOffsets();
         };
     }
 }
