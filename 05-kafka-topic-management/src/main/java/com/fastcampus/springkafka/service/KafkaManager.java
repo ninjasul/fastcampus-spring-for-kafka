@@ -79,4 +79,8 @@ public class KafkaManager {
             log.info("group: {}", group);
         });
     }
+
+    public void deleteConsumerGroup() throws ExecutionException, InterruptedException {
+        adminClient.deleteConsumerGroups(List.of("clip4-animal-listener")).all().get();
+    }
 }

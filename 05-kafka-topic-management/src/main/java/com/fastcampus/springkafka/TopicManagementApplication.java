@@ -16,12 +16,16 @@ public class TopicManagementApplication {
     @Bean
     public ApplicationRunner runner(KafkaManager kafkaManager) {
         return args -> {
+/*
             kafkaManager.describeTopicConfigs();
             kafkaManager.changeConfig();
             kafkaManager.describeTopicConfigs();
             kafkaManager.deleteConfig();
             kafkaManager.describeTopicConfigs();
             kafkaManager.deleteRecords();
+*/
+            kafkaManager.findAllConsumerGroup();
+            kafkaManager.deleteConsumerGroup();
             kafkaManager.findAllConsumerGroup();
         };
     }
