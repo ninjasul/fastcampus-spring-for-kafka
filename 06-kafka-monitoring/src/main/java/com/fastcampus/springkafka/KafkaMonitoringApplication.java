@@ -25,8 +25,8 @@ public class KafkaMonitoringApplication {
     ApplicationRunner runner(KafkaTemplate<String, String> kafkaTemplate, KafkaListenerEndpointRegistry kafkaListenerEndpointRegistry) {
         return args -> {
             Map<MetricName, ? extends Metric> producerMetrics = kafkaTemplate.metrics();
-            MessageListenerContainer container = kafkaListenerEndpointRegistry.getListenerContainer(CLIP6_LISTENER);
 
+            MessageListenerContainer container = kafkaListenerEndpointRegistry.getListenerContainer(CLIP6_LISTENER);
             Map<String, Map<MetricName, ? extends Metric>> consumerMetrics = container.metrics();
         };
     }
