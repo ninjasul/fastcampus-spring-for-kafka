@@ -2,7 +2,6 @@ package com.fastcampus.springkafka.consumer;
 
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.MeterRegistry;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
@@ -20,7 +19,7 @@ public class Clip6Consumer {
 
     @KafkaListener(id = CLIP6_LISTENER, topics = CLIP6_TOPIC)
     public void listen(String message) {
-        log.info("message: {}", message);
         counter.increment();
+        log.info("counter: {}, message: {}", counter.count(), message);
     }
 }
