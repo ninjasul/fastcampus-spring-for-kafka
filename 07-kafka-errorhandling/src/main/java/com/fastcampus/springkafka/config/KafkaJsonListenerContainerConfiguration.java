@@ -2,7 +2,9 @@ package com.fastcampus.springkafka.config;
 
 import com.fastcampus.springkafka.model.Animal;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
+import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,6 +17,7 @@ import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.kafka.listener.ConcurrentMessageListenerContainer;
 import org.springframework.kafka.listener.ListenerExecutionFailedException;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
+import org.springframework.retry.RetryContext;
 import org.springframework.retry.RetryPolicy;
 import org.springframework.retry.policy.SimpleRetryPolicy;
 import org.springframework.retry.support.RetryTemplate;
@@ -23,9 +26,11 @@ import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @Configuration
 @RequiredArgsConstructor
+@Slf4j
 public class KafkaJsonListenerContainerConfiguration implements KafkaListenerConfigurer {
     private final LocalValidatorFactoryBean validator;
 
@@ -34,7 +39,19 @@ public class KafkaJsonListenerContainerConfiguration implements KafkaListenerCon
         ConcurrentKafkaListenerContainerFactory<String, Animal> factory = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(animalConsumerFactory());
         factory.setRetryTemplate(customizedRetryTemplate());
+        factory.setRecoveryCallback(this::animalRetryCallback);
+        factory.setErrorHandler(this::animalErrorHandler);
         return factory;
+    }
+
+    private Optional<Object> animalRetryCallback(RetryContext context) {
+        ConsumerRecord record = (ConsumerRecord) context.getAttribute("record");
+        log.info("Recovery Callback. message: {}", record.value());
+        return Optional.empty();
+    }
+
+    private void animalErrorHandler(Exception thrownException, ConsumerRecord<?,?> consumerRecord) {
+        log.info("Error Handler. exception: {}", thrownException.getMessage());
     }
 
     private RetryTemplate customizedRetryTemplate() {
