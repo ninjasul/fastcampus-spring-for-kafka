@@ -47,7 +47,8 @@ public class KafkaJsonListenerContainerConfiguration implements KafkaListenerCon
     private Optional<Object> animalRetryCallback(RetryContext context) {
         ConsumerRecord record = (ConsumerRecord) context.getAttribute("record");
         log.info("Recovery Callback. message: {}", record.value());
-        return Optional.empty();
+        throw new RuntimeException("RuntimeException");
+        // return Optional.empty();
     }
 
     private void animalErrorHandler(Exception thrownException, ConsumerRecord<?,?> consumerRecord) {
