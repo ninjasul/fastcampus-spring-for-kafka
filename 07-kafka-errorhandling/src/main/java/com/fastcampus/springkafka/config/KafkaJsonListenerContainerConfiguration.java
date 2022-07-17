@@ -14,8 +14,11 @@ import org.springframework.kafka.config.KafkaListenerContainerFactory;
 import org.springframework.kafka.config.KafkaListenerEndpointRegistrar;
 import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.listener.ConcurrentMessageListenerContainer;
+import org.springframework.kafka.listener.DeadLetterPublishingRecoverer;
 import org.springframework.kafka.listener.ListenerExecutionFailedException;
+import org.springframework.kafka.listener.SeekToCurrentErrorHandler;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
 import org.springframework.retry.RetryContext;
 import org.springframework.retry.RetryPolicy;
@@ -33,6 +36,16 @@ import java.util.Optional;
 @Slf4j
 public class KafkaJsonListenerContainerConfiguration implements KafkaListenerConfigurer {
     private final LocalValidatorFactoryBean validator;
+
+    @Bean
+    public KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, Animal>> kafkaDeadLetterTopicJsonContainerFactory(
+            KafkaTemplate<String, Animal> kafkaJsonTemplate
+    ) {
+        ConcurrentKafkaListenerContainerFactory<String, Animal> factory = new ConcurrentKafkaListenerContainerFactory<>();
+        factory.setConsumerFactory(animalConsumerFactory());
+        factory.setErrorHandler(new SeekToCurrentErrorHandler(new DeadLetterPublishingRecoverer(kafkaJsonTemplate)));
+        return factory;
+    }
 
     @Bean
     public KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, Animal>> kafkaJsonContainerFactory() {

@@ -8,7 +8,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
-import static com.fastcampus.springkafka.constant.Constants.CLIP7_ANIMAL_TOPIC;
+import static com.fastcampus.springkafka.constant.Constants.*;
 
 @SpringBootApplication
 @Slf4j
@@ -21,7 +21,7 @@ public class ErrorHandlingApplication {
     @Bean
     public ApplicationRunner animalSendAsyncRunner(ClipProducer clipProducer) {
         return args -> {
-            clipProducer.sendAsync(CLIP7_ANIMAL_TOPIC, new Animal("puppy", 15));
+            clipProducer.sendAsync(CLIP7_ANIMAL_DLT_TOPIC, new Animal("puppy", 15));
         };
     }
 }

@@ -7,8 +7,7 @@ import org.springframework.stereotype.Service;
 
 import javax.validation.Valid;
 
-import static com.fastcampus.springkafka.constant.Constants.CLIP7_ANIMAL_LISTENER_ID;
-import static com.fastcampus.springkafka.constant.Constants.CLIP7_ANIMAL_TOPIC;
+import static com.fastcampus.springkafka.constant.Constants.*;
 
 @Service
 @Slf4j
@@ -21,5 +20,15 @@ public class ClipConsumer {
     )
     public void listenAnimal(@Valid Animal animal) {
         log.info("Animal. animal: {}", animal);
+    }
+
+
+    @KafkaListener(
+            id = CLIP7_ANIMAL_DLT_LISTENER_ID,
+            topics = CLIP7_ANIMAL_DLT_TOPIC,
+            containerFactory = "kafkaDeadLetterTopicJsonContainerFactory"
+    )
+    public void listenAnimalDLT(@Valid Animal animal) {
+        log.info("DLT Animal. animal: {}", animal);
     }
 }
