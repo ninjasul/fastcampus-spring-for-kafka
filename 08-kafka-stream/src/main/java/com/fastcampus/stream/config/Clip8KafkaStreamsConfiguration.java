@@ -26,16 +26,15 @@ public class Clip8KafkaStreamsConfiguration {
     public KStream<String, String> kStream(StreamsBuilder streamsBuilder) {
         KStream<String, String> stream = streamsBuilder.stream(CLIP8_TOPIC);
 
-        stream.groupBy((key, value) -> value)
-                .count()
-                .toStream()
-                .peek((key, value) -> log.info("key: {}, value: {}", key, value));
-        /*
-        stream.peek((key, value) -> log.info("Stream. message: {}", value))
-                .map((key, value) -> KeyValue.pair(key, "converted message - " + value))
-                .to(CLIP8_TO_TOPIC);
-        */
+        KStream<String, String>[] branches = stream.branch(
+                (key, value) -> Long.valueOf(value) % 10 == 0,
+                (key, value) -> true
+        );
 
+        for (int i = 0; i < branches.length; i++) {
+            int finalI = i;
+            branches[i].peek((key, value) -> log.info(String.format("[branch %d] message: %s", finalI, value)));
+        }
 
         return stream;
     }
