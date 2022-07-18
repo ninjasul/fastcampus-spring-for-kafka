@@ -1,5 +1,6 @@
 package com.fastcampus.stream.config;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.StreamsConfig;
@@ -17,11 +18,14 @@ import static com.fastcampus.stream.constant.Constants.*;
 
 @Configuration
 @EnableKafkaStreams
+@Slf4j
 public class Clip8KafkaStreamsConfiguration {
 
     @Bean
     public KStream<String, String> kStream(StreamsBuilder streamsBuilder) {
-        return streamsBuilder.stream(CLIP8_TOPIC);
+        KStream<String, String> stream = streamsBuilder.stream(CLIP8_TOPIC);
+        stream.peek((key, value) -> log.info("Stream. message: {}", value)).to(CLIP8_TO_TOPIC);
+        return stream;
     }
 
     @Bean(name = KafkaStreamsDefaultConfiguration.DEFAULT_STREAMS_CONFIG_BEAN_NAME)
