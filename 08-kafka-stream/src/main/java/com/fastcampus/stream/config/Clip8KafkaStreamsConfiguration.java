@@ -25,9 +25,17 @@ public class Clip8KafkaStreamsConfiguration {
     @Bean
     public KStream<String, String> kStream(StreamsBuilder streamsBuilder) {
         KStream<String, String> stream = streamsBuilder.stream(CLIP8_TOPIC);
+
+        stream.groupBy((key, value) -> value)
+                .count()
+                .toStream()
+                .peek((key, value) -> log.info("key: {}, value: {}", key, value));
+        /*
         stream.peek((key, value) -> log.info("Stream. message: {}", value))
                 .map((key, value) -> KeyValue.pair(key, "converted message - " + value))
                 .to(CLIP8_TO_TOPIC);
+        */
+
 
         return stream;
     }
