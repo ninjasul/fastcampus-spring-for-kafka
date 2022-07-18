@@ -2,6 +2,7 @@ package com.fastcampus.stream.config;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.common.serialization.Serdes;
+import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.StreamsConfig;
 import org.apache.kafka.streams.kstream.KStream;
@@ -24,7 +25,10 @@ public class Clip8KafkaStreamsConfiguration {
     @Bean
     public KStream<String, String> kStream(StreamsBuilder streamsBuilder) {
         KStream<String, String> stream = streamsBuilder.stream(CLIP8_TOPIC);
-        stream.peek((key, value) -> log.info("Stream. message: {}", value)).to(CLIP8_TO_TOPIC);
+        stream.peek((key, value) -> log.info("Stream. message: {}", value))
+                .map((key, value) -> KeyValue.pair(key, "converted message - " + value))
+                .to(CLIP8_TO_TOPIC);
+
         return stream;
     }
 
