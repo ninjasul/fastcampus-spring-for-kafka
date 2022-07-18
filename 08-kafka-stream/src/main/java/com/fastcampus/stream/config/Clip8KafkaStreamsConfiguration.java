@@ -31,6 +31,7 @@ public class Clip8KafkaStreamsConfiguration {
         configs.put(StreamsConfig.APPLICATION_ID_CONFIG, APPLICATION_ID);
         configs.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass());
         configs.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, Serdes.String().getClass());
+        configs.put(StreamsConfig.NUM_STREAM_THREADS_CONFIG, "2");
 
         return new KafkaStreamsConfiguration(configs);
 
